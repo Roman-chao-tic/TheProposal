@@ -221,12 +221,14 @@
         let amiaudio = new Audio('AMI.mp3');
         let ilobuaudio = new Audio('ILobU.mp3');
         let currentAudio = null;
-
+        let isAMIPlaying = false;
+        
         function handleYes() {
             if (currentAudio) {
                 currentAudio.pause();
                 currentAudio.currentTime = 0;
             }
+            isAMIPlaying = false;
             ilobuaudio.loop = true;
             currentAudio = ilobuaudio;
             currentAudio.play();
@@ -240,6 +242,7 @@
         }
 
         function handleNo() {
+            if (!isAMIPlaying) {
             if (currentAudio) {
                 currentAudio.pause();
                 currentAudio.currentTime = 0;
@@ -247,6 +250,8 @@
             amiaudio.loop = true;
             currentAudio = amiaudio;
             currentAudio.play();
+            isAMIPlaying = true;
+            }
             document.body.style.background = "url('depressedstorm.gif') no-repeat center center/cover";
             setTimeout(() => {
                 document.getElementById('pleading-message').innerText = pleadingMessages[messageIndex];
