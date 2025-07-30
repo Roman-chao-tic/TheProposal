@@ -1,0 +1,593 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Will You Be My Girlfriend?</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
+
+        body {
+            margin: 0;
+            padding: 0;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            background: url('https://media2.giphy.com/media/v1.Y2lkPTc5MGI3NjExMzJ2Z3VjdjI4NDZpbzM2Nzgwem9zNDRudW5pZ29lbDJrbXIyaTZ2ZiZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/xWMPYx55WNhX136T0V/giphy.gif') no-repeat center center/cover;
+            font-family: 'Press Start 2P', cursive;
+            color: #fff;
+            text-align: center;
+            transition: background 1.5s ease-in-out;
+        }
+
+        .container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .message {
+            font-size: 2rem;
+            font-weight: bold;
+            position: relative;
+            margin-bottom: 20px;
+            text-shadow: 2px 2px #000;
+            animation: hover-effect 1.5s infinite;
+            color: #2A562C;
+        }
+
+        .message span {
+            position: relative;
+            cursor: pointer;
+        }
+
+        .buttons {
+            margin-top: 20px;
+        }
+
+        button {
+            font-family: 'Press Start 2P', cursive;
+            font-size: 1rem;
+            padding: 15px 30px;
+            margin: 10px;
+            border: none;
+            cursor: pointer;
+            color: #fff;
+            background: linear-gradient(to bottom, #444, #222);
+            border: 4px solid #000;
+            box-shadow: 4px 4px 0 #000;
+            text-transform: uppercase;
+            text-shadow: 2px 2px #000;
+            transition: transform 0.1s ease;
+        }
+
+        button:active {
+            transform: translate(4px, 4px);
+            box-shadow: none;
+        }
+
+        .yes-btn {
+            background: linear-gradient(to bottom, #4CAF50, #2E7D32);
+            border-color: #1B5E20;
+        }
+
+        .no-btn {
+            background: linear-gradient(to bottom, #f44336, #C62828);
+            border-color: #B71C1C;
+        }
+
+        #pleading-message { 
+            display: none; 
+            font-size: 1.5rem; 
+            font-weight: bold; 
+            color: #2A562C; 
+            padding: 10px 20px; 
+            border-radius: 10px; 
+            margin-top: 20px; 
+            text-shadow: 2px 2px 4px #000; 
+            animation: hover-effect 1.5s infinite;
+            width: 80%;
+            max-width: 400px; 
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        @keyframes hover-effect {
+            0%, 100% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(-10px);
+            }
+        }
+
+        @media (max-width: 600px) {
+            .message {
+                font-size: 1.5rem;
+                padding: 0 20px;
+            }
+
+            button {
+                font-size: 0.8rem;
+                padding: 10px 20px;
+            }
+
+            #pleading-message {
+                font-size: 1rem;
+            }
+        }
+
+        [data-tooltip] {
+            position: relative;
+            cursor: pointer;
+        }
+        
+        [data-tooltip]:hover {
+            color: gold;
+            text-shadow: 0 0 10px gold, 0 0 20px gold;
+        }
+        
+        [data-tooltip]::after {
+            content: attr(data-tooltip);
+            position: absolute;
+            bottom: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(0,0,0,0.8);
+            color: gold;
+            padding: 5px 10px;
+            border-radius: 5px;
+            font-size: 0.8rem;
+            white-space: nowrap;
+            visibility: hidden;
+            opacity: 0;
+            transition: all 0.3s ease;
+        }
+
+        [data-tooltip]:hover::after {
+            visibility: visible;
+            opacity: 1;
+        }
+
+        .glowing-tulip {
+            text-shadow: 0 0 10px #ff00ff, 0 0 20px #ff00ff, 0 0 30px #ff00ff, 0 0 40px #ff00ff;
+            animation: glow 1.5s infinite alternate;
+            cursor: pointer;
+        }
+
+        @keyframes glow {
+            0% {
+                text-shadow: 0 0 10px #ff00ff, 0 0 20px #ff00ff, 0 0 30px #ff00ff, 0 0 40px #ff00ff;
+            }
+            100% {
+                text-shadow: 0 0 15px #ff00ff, 0 0 25px #ff00ff, 0 0 35px #ff00ff, 0 0 45px #ff00ff;
+            }
+        }
+
+        .typing-container {
+            display: none;
+            position: absolute;
+            top: 20%;
+            left: 10%;
+            color: #000;
+            font-size: 1.2rem;
+            background: #fff;
+            padding: 10px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+        }
+
+        .rose {
+            position: absolute;
+            animation: fall 3s linear infinite;
+            opacity: 0.8;
+        }
+
+        @keyframes fall {
+            0% {
+                transform: translateY(-100px);
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(100vh) rotate(360deg);
+                opacity: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="message">
+            Will You<span data-tooltip="Chutki">*</span> Be My<span data-tooltip="Abir">*</span> Girlfriend? Plsss🥺🥺🥺
+        </div>
+        <div class="buttons">
+            <button class="yes-btn" onclick="handleYes()">Yes</button>
+            <button class="no-btn" onclick="handleNo()">No</button>
+        </div>
+    </div>
+    <div id="pleading-message">Pleaseee say yes! 😭</div>
+    <div class="typing-container" id="typing-container"></div>
+
+    <script>
+        let pleadingMessages = [
+            "Pleaseee say yes! I'm begging! 🙏",
+            "Amay erom bhabe na bolte parli toh?🥺",
+            "You're my sunshine, don't leave me in the rain! 🌞🌧️",
+            "Khuuuuuub dukkho dichhis amay 😭"
+        ];
+        let messageIndex = 0;
+
+        function handleYes() {
+            document.body.style.background = "url('https://img.freepik.com/free-photo/8-bit-graphics-pixels-scene-with-tulip-field_23-2151120922.jpg?t=st=1737836128~exp=1737839728~hmac=907ee67857319be9ce01a836741c1687136709863e8af2d01a26b324e07aa151&w=1060') no-repeat center center/cover";
+            setTimeout(() => {
+                document.querySelector('.message').innerHTML = `I love you too hunnyyy mwahhhh 💕<span class='glowing-tulip' onclick='handleTulipClick()'>🌷</span>`;
+                document.querySelector('.message').style.color = '#2A562C';  // Set the color here
+                document.querySelector('.buttons').style.display = 'none';
+                document.getElementById('pleading-message').style.display = 'none';
+            }, 500);
+        }
+
+        function handleNo() {
+            document.body.style.background = "url('https://img.wattpad.com/94192b7d7e77c39cbcf3d9959d0233b90641bdc2/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f776174747061642d6d656469612d736572766963652f53746f7279496d6167652f335558695a4e5f664850474d52413d3d2d3534393733333239332e313532306263356361343933326665643733373837363832373835372e676966?s=fit') no-repeat center center/cover";
+            setTimeout(() => {
+                document.getElementById('pleading-message').innerText = pleadingMessages[messageIndex];
+                document.getElementById('pleading-message').style.display = 'block';
+                messageIndex = (messageIndex + 1) % pleadingMessages.length;
+            }, 500);
+        }
+
+function handleTulipClick() {                       
+    window.location.href = "../Proposal-2-main/index.html";
+}
+    </script>
+</body>
+</html>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Falling Roses Proposal</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(to bottom, #ffcccc, #ffe6e6); /* Romantic gradient */
+            overflow: hidden;
+        }
+
+        #falling-roses {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            pointer-events: none;
+            overflow: hidden;
+        }
+
+        .rose {
+            position: absolute;
+            top: -50px; /* Start above the viewport */
+            animation: fall linear infinite;
+        }
+
+        @keyframes fall {
+            from {
+                transform: translateY(-50px); /* Start above the viewport */
+                opacity: 1;
+            }
+            to {
+                transform: translateY(100vh); /* Fall to the bottom */
+                opacity: 0;
+            }
+        }
+
+        #text-container {
+            margin: 20px;
+            font-size: 24px;
+            color: #b30000;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        #nah-btn {
+            display: none;
+            background-color: #ff6666;
+            color: white;
+            border: none;
+            border-radius: 20px;
+            padding: 10px 20px;
+            cursor: pointer;
+            font-size: 16px;
+            margin: 20px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        #nah-btn:hover {
+            background-color: #cc0000;
+        }
+
+        #image-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            opacity: 0;
+            transition: opacity 2s ease-in-out;
+        }
+
+        #fool-img {
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        #final-text {
+            position: absolute;
+            bottom: 10%;
+            right: 5%;
+            text-align: right;
+            color: #b30000;
+            font-size: 20px;
+        }
+
+        .glow {
+            font-size: 30px;
+            animation: glow 1s infinite alternate;
+            cursor: pointer;
+        }
+
+        @keyframes glow {
+            from {
+                text-shadow: 0 0 5px red;
+            }
+            to {
+                text-shadow: 0 0 15px red;
+            }
+        }
+
+        #audio-controls {
+            position: absolute;
+            bottom: 10px;
+            left: 10px;
+            background-color: rgba(255, 255, 255, 0.8);
+            padding: 5px 10px;
+            border-radius: 5px;
+            font-size: 14px;
+            cursor: pointer;
+            color: #b30000;
+        }
+
+        #audio-controls:hover {
+            background-color: #ffe6e6;
+        }
+    </style>
+</head>
+<body>
+    <div id="text-container"></div>
+    <button id="nah-btn">Nah</button>
+    <div id="image-container">
+        <img id="fool-img" src="Fool.jpg" alt="Fool" width="500">
+    </div>
+    <div id="falling-roses"></div>
+    <div id="final-text" style="display: none;">
+        <p>Take this rose</p>
+        <p>from your fool</p>
+        <p style="font-size: 40px;">&darr;</p>
+        <p class="glow" onclick="window.location.href='https://roman-chao-tic.github.io/Proposal-3/';">🌹</p>
+    </div>
+    <div id="audio-controls">🔊 Mute</div>
+
+    <audio id="prop2" loop>
+        <source src="prop2.mp3" type="audio/mp3">
+    </audio>
+
+    <script>
+        const textContainer = document.getElementById('text-container');
+        const nahBtn = document.getElementById('nah-btn');
+        const imageContainer = document.getElementById('image-container');
+        const finalText = document.getElementById('final-text');
+        const audio = document.getElementById('prop2');
+        const audioControls = document.getElementById('audio-controls');
+        let isMuted = false;
+
+        function typeText(text, speed = 100) {
+            return new Promise(resolve => {
+                let i = 0;
+                const interval = setInterval(() => {
+                    textContainer.innerHTML = `<span class='typing'>${text.slice(0, i)}</span>`;
+                    i++;
+                    if (i > text.length) {
+                        clearInterval(interval);
+                        textContainer.innerHTML = text;
+                        resolve();
+                    }
+                }, speed);
+            });
+        }
+
+        async function startSequence() {
+            await typeText("Gandu ta toke flowers dilo??", 100);
+            nahBtn.style.display = 'inline-block';
+        }
+
+        nahBtn.addEventListener('click', async () => {
+            nahBtn.style.display = 'none';
+            await typeText("Jantammm!!!!!! What a f*cking incompetent.", 100);
+            await new Promise(resolve => setTimeout(resolve, 1000)); // Delay before next text
+            await typeText("Well, anyways ei ne phul from your fool", 100);
+            setTimeout(() => {
+                imageContainer.style.opacity = 1;
+                setTimeout(() => {
+                    audio.play().catch(e => console.log("Audio play prevented"));
+                }, 50);
+                finalText.style.display = 'block';
+                startFallingRoses();
+            }, 2000);
+        });
+
+        function startFallingRoses() {
+            for (let i = 0; i < 10; i++) {
+                let rose = document.createElement('div');
+                rose.innerHTML = '🌹';
+                rose.classList.add('rose');
+                rose.style.left = Math.random() * window.innerWidth + 'px';
+                rose.style.animationDuration = (Math.random() * 3 + 2) + 's';
+                rose.style.animationDelay = Math.random() * 2 + 's';
+                document.getElementById('falling-roses').appendChild(rose);
+
+                setTimeout(() => rose.remove(), 5000);
+            }
+
+            setTimeout(startFallingRoses, 1000);
+        }
+
+        audioControls.addEventListener('click', () => {
+            isMuted = !isMuted;
+            audio.muted = isMuted;
+            audioControls.textContent = isMuted ? '🔇 Unmute' : '🔊 Mute';
+        });
+
+        // Initialize audio but don't auto-start playback
+        audio.muted = false;
+        audio.autoplay = false;
+        startSequence();
+    </script>
+</body>
+</html>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Congrats</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            background-color: black;
+            font-family: "Courier New", Courier, monospace;
+            padding: 20px;
+        }
+
+        .emoji {
+            font-size: 10vw;
+            cursor: pointer;
+            text-shadow: 0 0 10px white, 0 0 20px yellow, 0 0 30px orange;
+            animation: glow 1.5s infinite alternate;
+        }
+
+        @keyframes glow {
+            0% { text-shadow: 0 0 10px white, 0 0 20px yellow, 0 0 30px orange; }
+            100% { text-shadow: 0 0 20px white, 0 0 30px yellow, 0 0 40px orange; }
+        }
+
+        .text-container {
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            margin-top: 20px;
+        }
+
+        .headline, .sub-headline {
+            font-family: 'Press Start 2P', cursive;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: white;
+            padding: 5px;
+            backdrop-filter: blur(5px);
+            background: rgba(0, 0, 0, 0.5);
+            border-radius: 10px;
+            max-width: 90%;
+            display: none;
+        }
+
+        .headline {
+            font-size: 2.5vw;
+            margin-bottom: 2vh;
+        }
+
+        .sub-headline {
+            font-size: 1.8vw;
+            margin-bottom: 3vh;
+        }
+
+        .image-container {
+            position: relative;
+            width: 400px;
+            height: 400px;
+            margin-top: 40px;
+            overflow: hidden;
+            border-radius: 50%;
+            clip-path: circle(0%);
+            transition: clip-path 1.5s ease-in-out;
+            display: none;
+        }
+
+        .image-container img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .reveal {
+            clip-path: circle(100%);
+        }
+
+        @media (max-width: 600px) {
+            .headline { font-size: 4vw; }
+            .sub-headline { font-size: 3vw; }
+            .image-container { width: 320px; height: 320px; }
+        }
+    </style>
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+</head>
+<body>
+
+    <div class="emoji" id="emoji">💍</div>
+
+    <div class="text-container" id="text-container">
+        <div class="headline" id="headline">CONGRATULATIONS!</div>
+        <div class="sub-headline" id="sub-headline">You are now my Girlfriend 🤭</div>
+    </div>
+
+    <div class="image-container" id="image-container">
+        <img src="usss.jpg" alt="Celebratory Image">
+    </div>
+
+    <audio id="audio" src="prop3.mp3" preload="auto"></audio>
+
+    <script>
+        document.getElementById('emoji').addEventListener('click', function() {
+            this.style.display = 'none';
+            document.getElementById('text-container').style.display = 'flex';
+            
+            setTimeout(() => {
+                document.getElementById('headline').style.display = 'block';
+            }, 500);
+            
+            setTimeout(() => {
+                document.getElementById('sub-headline').style.display = 'block';
+            }, 1000);
+            
+            setTimeout(() => {
+                document.getElementById('image-container').style.display = 'block';
+                document.getElementById('image-container').classList.add('reveal');
+                const audio = document.getElementById('audio');
+                audio.play().catch(error => console.log("Audio playback failed: ", error));
+            }, 1500);
+        });
+    </script>
+
+</body>
+</html>
