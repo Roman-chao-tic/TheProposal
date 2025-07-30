@@ -61,7 +61,6 @@
             text-transform: uppercase;
             text-shadow: 2px 2px #000;
             transition: transform 0.1s ease;
-            border-radius: 8px;
         }
 
         button:active {
@@ -219,10 +218,18 @@
             "Khuuuuuub dukkho dichhis amay 😭"
         ];
         let messageIndex = 0;
+        let amiaudio = new Audio('AMI.mp3');
+        let ilobuaudio = new Audio('ILobU.mp3');
+        let currentAudio = null;
 
         function handleYes() {
-            let audio = new Audio('ILobU.mp3');
-            audio.play();
+            if (currentAudio) {
+                currentAudio.pause();
+                currentAudio.currentTime = 0;
+            }
+            ilobuaudio.loop = true;
+            currentAudio = ilobuaudio;
+            currentAudio.play();
             document.body.style.background = "url('tulip_field.jpg') no-repeat center center/cover";
             setTimeout(() => {
                 document.querySelector('.message').innerHTML = `I love you too hunnyyy mwahhhh 💕<span class='glowing-tulip' onclick='handleTulipClick()'>🌷</span>`;
@@ -233,8 +240,13 @@
         }
 
         function handleNo() {
-            let audio = new Audio('AMI.mp3');
-            audio.play();
+            if (currentAudio) {
+                currentAudio.pause();
+                currentAudio.currentTime = 0;
+            }
+            amiaudio.loop = true;
+            currentAudio = amiaudio;
+            currentAudio.play();
             document.body.style.background = "url('depressedstorm.gif') no-repeat center center/cover";
             setTimeout(() => {
                 document.getElementById('pleading-message').innerText = pleadingMessages[messageIndex];
